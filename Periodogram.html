@@ -13120,10 +13120,10 @@ div#notebook {
 <center>2019.12.13</center><p>$~~~~~~$给定一个平稳过程$\{x_t\}$的观测数据$x_0,x_1,...,x_N$时，当$N$足够大时，如何估计功率谱密度？估计功率谱密度最早的方法为周期图方法(Periodogram)。由于序列$\{x_t\}$的离散傅里叶变换$X(m)$具有周期性，因而功率谱也具有周期性，所以称为功率谱方法。</p>
 <h2 id="1.&#20266;&#20195;&#30721;&#65306;">1.&#20266;&#20195;&#30721;&#65306;<a class="anchor-link" href="#1.&#20266;&#20195;&#30721;&#65306;">&#182;</a></h2><p>Input：输入观测数据$x_1,x_2,...x_n$ .<br>
 Step1:计算
-$$X(m)=FFT\{x_1,x_2,...,x_n\},m=0,1,2..,N$$
-Step2:计算
-$$P(\frac{m\pi}{N+1})=\frac{\mid X(m)\mid^2}{N}$$<br>
-Output:$P(\frac{m\pi}{N+1})$在$[0,\pi]$上的柱状图及其包络</p>
+$$X(m)=FFT\{x_1,x_2,...,x_n\},m=0,1,2..,N$$</p>
+<p>Step2:计算
+$$P(\frac{m\pi}{N+1})=\frac{\mid X(m)\mid^2}{N}$$</p>
+<p>Output:$P(\frac{m\pi}{N+1})$在$[0,\pi]$上的柱状图及其包络</p>
 <h2 id="2.Python-Code">2.Python Code<a class="anchor-link" href="#2.Python-Code">&#182;</a></h2>
 </div>
 </div>
@@ -13141,10 +13141,12 @@ Output:$P(\frac{m\pi}{N+1})$在$[0,\pi]$上的柱状图及其包络</p>
 <span class="c1">#生成N个正弦信号</span>
 <span class="k">def</span> <span class="nf">generate_sin</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    :param N: number of sample</span>
-<span class="sd">    :return: xn:the A series of signals</span>
+<span class="sd">    :param </span>
+<span class="sd">            N: number of sample</span>
+<span class="sd">    :return: </span>
+<span class="sd">            xn:the A series of signals#随机信号</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="c1"># sample rate</span>
+    <span class="c1"># sample rate采样率</span>
     <span class="n">fs</span> <span class="o">=</span> <span class="mi">1000</span>
     <span class="c1"># N 个样本</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
@@ -13158,22 +13160,26 @@ Output:$P(\frac{m\pi}{N+1})$在$[0,\pi]$上的柱状图及其包络</p>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">Step1:generate the a random signals</span>
 <span class="sd">&#39;&#39;&#39;</span>
- <span class="c1"># number of sample</span>
+<span class="c1"># number of sample</span>
 <span class="n">N</span> <span class="o">=</span> <span class="mi">301</span>
-    <span class="c1"># 产生随机信号</span>
+<span class="c1"># 产生随机信号</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">generate_sin</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="c1">#绘制原始信号图</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="c1">#标题名</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Original Signal Plot&quot;</span><span class="p">)</span>
+<span class="c1">#x轴名称</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Frenquency&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Amplitude&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">Step2:Discrete Fourier Transform to x</span>
 <span class="sd">&#39;&#39;&#39;</span>
+<span class="c1">#对离散x做离散傅里叶变换</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="c1"># Magnitude(amplitude)</span>
+<span class="c1"># Magnitude(amplitude)</span>
 <span class="n">mX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-    <span class="c1"># phase</span>
+<span class="c1"># phase</span>
 <span class="n">pX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd"> Step3:Calculate the |X(m)|^2/N</span>
@@ -13182,17 +13188,23 @@ Output:$P(\frac{m\pi}{N+1})$在$[0,\pi]$上的柱状图及其包络</p>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">Step4: Plot the graph</span>
 <span class="sd">&#39;&#39;&#39;</span>
-    <span class="c1">#归一化</span>
+<span class="c1">#归一化</span>
 <span class="n">norm_P</span> <span class="o">=</span><span class="p">[]</span>
+<span class="c1">#最大值</span>
 <span class="n">max_P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+<span class="c1">#最小值</span>
 <span class="n">min_P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+<span class="c1">#对P(t)做归一化</span>
 <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">P</span><span class="p">:</span>
     <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">min_P</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">max_P</span><span class="o">-</span><span class="n">min_P</span><span class="p">)</span>
     <span class="n">norm_P</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-
+<span class="c1">#绘制周期图</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">norm_P</span><span class="p">)</span>
+<span class="c1">#标题</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Periodogram&quot;</span><span class="p">)</span>
+<span class="c1">#x轴名称</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Frenquency&quot;</span><span class="p">)</span>
+<span class="c1">#y轴名称</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;power spectrum&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
@@ -13244,7 +13256,7 @@ Output:$P(\frac{m\pi}{N+1})$在$[0,\pi]$上的柱状图及其包络</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$~~~~~~$然而，它并不是真正的周期图。当$N\rightarrow\infty$时，偏差不趋于0.所得的周期图随$N$的变化而变化，这种现象称为随即起伏。</p>
+<p>$~~~~~~$然而，它并不是真正的周期图。当$N\rightarrow\infty$时，偏差不趋于0.所得的周期图随$N$的变化而变化，这种现象称为随机起伏。</p>
 
 </div>
 </div>
